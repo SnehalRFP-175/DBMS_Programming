@@ -73,7 +73,7 @@ mysql> select * from employee_payroll;
 Empty set (0.01 sec)
 
 **************************************************************************************************************************************
-\\UC3 Create Employee Payroll Data as a part of CURD Operation
+\\UC3 CURD Operation
 
 mysql> insert into employee_payroll
     -> (name,salary,start_date)
@@ -100,4 +100,16 @@ mysql> select * from employee_payroll;
 |  2 | Pranit |  15000 | 2018-11-08 |
 +----+--------+--------+------------+
 2 rows in set (0.00 sec)
+
 **************************************************************************************************************************************
+\\UC4 Retrieve All Employee Data
+
+mysql> select * from employee_payroll;
++----+--------+--------+------------+
+| id | name   | salary | start_date |
++----+--------+--------+------------+
+|  1 | Snehal |  10000 | 2019-12-12 |
+|  2 | Pranit |  15000 | 2018-11-08 |
+|  3 | Bill   |  20000 | 2018-08-01 |
++----+--------+--------+------------+
+3 rows in set (0.00 sec)
