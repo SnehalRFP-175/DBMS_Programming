@@ -12,6 +12,7 @@ owners.
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 **************************************************************************************************************************************
+
 \\UC-1 Ability to create a payroll service database.
 
 mysql> create database payroll_service;
@@ -170,7 +171,8 @@ mysql> select * from employee_payroll;
 +----+--------+--------+--------+------------+
 3 rows in set (0.00 sec)
 
-**************************************************************************************************************************************\\UC7 Using Data Function Sum
+**************************************************************************************************************************************
+\\UC7 Using Data Function Sum
 
 mysql> select SUM(salary) from employee_payroll
     -> where gender = 'M'
@@ -182,4 +184,34 @@ mysql> select SUM(salary) from employee_payroll
 +-------------+
 1 row in set (0.00 sec)
 
-mysql> 
+**************************************************************************************************************************************
+
+\\UC8 Alter Table
+
+mysql> ALTER TABLE employee_payroll
+    -> ADD address varchar(255)
+    -> AFTER name;
+Query OK, 0 rows affected (0.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE employee_payroll
+    -> ADD phone varchar(255)
+    -> AFTER name;
+Query OK, 0 rows affected (0.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE employee_payroll
+    -> ADD department varchar(255) not null
+    -> after address;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++----+--------+-------+---------+------------+--------+--------+------------+
+| id | name   | phone | address | department | gender | salary | start_date |
++----+--------+-------+---------+------------+--------+--------+------------+
+|  1 | Snehal | NULL  | NULL    |            |        |  10000 | 2019-12-12 |
+|  2 | Pranit | NULL  | NULL    |            | M      |  15000 | 2018-11-08 |
+|  3 | Bill   | NULL  | NULL    |            | M      |  20000 | 2018-08-01 |
++----+--------+-------+---------+------------+--------+--------+------------+
+3 rows in set (0.00 sec)
