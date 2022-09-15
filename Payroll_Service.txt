@@ -57,5 +57,21 @@ mysql> | databasedemo       |
        mysql> Database changed
 
 **************************************************************************************************************************************
+\\UC2 Create Employee_Payroll Table into Payroll_Service Database.
+
+mysql> create table employee_payroll (
+	-> id int auto_increment not null, 
+	-> name varchar(255) not null,    
+	-> salary float not null,    
+	-> start_date DATE not null,    
+	-> primary key(id)
+	-> );
+
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> select * from employee_payroll;
+Empty set (0.01 sec)
+
+**************************************************************************************************************************************
 
 
