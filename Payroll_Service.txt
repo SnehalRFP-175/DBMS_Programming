@@ -1,6 +1,6 @@
 Enter password: ************
 Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 11
+Your MySQL connection id is 50
 Server version: 8.0.30 MySQL Community Server - GPL
 
 Copyright (c) 2000, 2022, Oracle and/or its affiliates.
@@ -11,283 +11,47 @@ owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-**************************************************************************************************************************************
-
-\\UC-1 Ability to create a payroll service database.
-
-mysql> create database payroll_service;
-Query OK, 1 row affected (0.15 sec)
-
-mysql> show databases;
-+--------------------+
-| Database           |
-+--------------------+
-| databasedemo       |
-| databasedemo2      |
-| first_database     |
-| information_schema |
-| my_database        |
-| mysql              |
-| payroll_service    |
-| performance_schema |
-| sakila             |
-| second_database    |
-| sys                |
-| world              |
-+--------------------+
-12 rows in set (0.00 sec)
-
 mysql> use payroll_service;
 Database changed
-mysql> | databasedemo       |
-    -> | databasedemo2      |
-    -> | first_database     |
-    -> | information_schema |
-    -> | my_database        |
-    -> | mysql              |
-    -> | payroll_service    |
-    -> | performance_schema |
-    -> | sakila             |
-    -> | second_database    |
-    -> | sys                |
-    -> | world              |
-    -> +--------------------+
-    -> 12 rows in set (0.00 sec)
-    ->
-    -> mysql> USE payroll_service;
-       mysql> Database changed
 
-**************************************************************************************************************************************
-\\UC2 Create Employee_Payroll Table into Payroll_Service Database.
-
-mysql> create table employee_payroll (
-	-> id int auto_increment not null, 
-	-> name varchar(255) not null,    
-	-> salary float not null,    
-	-> start_date DATE not null,    
-	-> primary key(id)
-	-> );
-
-Query OK, 0 rows affected (0.16 sec)
-
-mysql> select * from employee_payroll;
-Empty set (0.01 sec)
-
-**************************************************************************************************************************************
-\\UC3 CURD Operation
-
-mysql> insert into employee_payroll
-    -> (name,salary,start_date)
-    -> values ('Snehal',10000,'2019-12-12');
-Query OK, 1 row affected (0.03 sec)
-
-mysql> select * from employee_payroll;
-+----+--------+--------+------------+
-| id | name   | salary | start_date |
-+----+--------+--------+------------+
-|  1 | Snehal |  10000 | 2019-12-12 |
-+----+--------+--------+------------+
-1 row in set (0.00 sec)
-mysql> insert into employee_payroll
-    -> (name,salary,start_date)
-    -> values ('Pranit',15000,'2018-11-08');
-Query OK, 1 row affected (0.03 sec)
-
-mysql> select * from employee_payroll;
-+----+--------+--------+------------+
-| id | name   | salary | start_date |
-+----+--------+--------+------------+
-|  1 | Snehal |  10000 | 2019-12-12 |
-|  2 | Pranit |  15000 | 2018-11-08 |
-+----+--------+--------+------------+
-2 rows in set (0.00 sec)
-
-**************************************************************************************************************************************
-\\UC4 Retrieve All Employee Data
-
-mysql> select * from employee_payroll;
-+----+--------+--------+------------+
-| id | name   | salary | start_date |
-+----+--------+--------+------------+
-|  1 | Snehal |  10000 | 2019-12-12 |
-|  2 | Pranit |  15000 | 2018-11-08 |
-|  3 | Bill   |  20000 | 2018-08-01 |
-+----+--------+--------+------------+
-3 rows in set (0.00 sec)
-
-**************************************************************************************************************************************
-\\UC5 Retrive Data for Perticular Employee
-
-
-mysql> select salary from employee_payroll where name = 'Bill';
-+--------+
-| salary |
-+--------+
-|  20000 |
-+--------+
+mysql> select * from Company;
++------------+--------------+
+| company_ID | company_Name |
++------------+--------------+
+|          1 | BridgeLabz   |
++------------+--------------+
 1 row in set (0.00 sec)
 
-mysql> select * from employee_payroll  
-    -> where start_date between CAST('2018-11-08' AS DATE) and DATE(NOW()) ;
-+----+--------+--------+------------+
-| id | name   | salary | start_date |
-+----+--------+--------+------------+
-|  1 | Snehal |  10000 | 2019-12-12 |
-|  2 | Pranit |  15000 | 2018-11-08 |
-+----+--------+--------+------------+
-2 rows in set (0.00 sec)
 
-**************************************************************************************************************************************\\UC6 Add Gender Column to Employee Payroll Table and Update Data
+mysql> CREATE TABLE employee
+    -> (
+    -> id  INT NOT NULL AUTO_INCREMENT,
+    -> company_ID INT NOT NULL,
+    -> salary DOUBLE NOT NULL,
+    -> FOREIGN KEY(company_ID) REFERENCES Company (company_ID),
+    -> PRIMARY KEY (id)
+    -> );
+Query OK, 0 rows affected (0.30 sec)
 
-mysql> ALTER TABLE employee_payroll
-    -> ADD column gender varchar(255) not null
-    -> AFTER name;
-Query OK, 0 rows affected (0.09 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> select * from employee_payroll;
-+----+--------+--------+--------+------------+
-| id | name   | gender | salary | start_date |
-+----+--------+--------+--------+------------+
-|  1 | Snehal |        |  10000 | 2019-12-12 |
-|  2 | Pranit |        |  15000 | 2018-11-08 |
-|  3 | Bill   |        |  20000 | 2018-08-01 |
-+----+--------+--------+--------+------------+
-3 rows in set (0.00 sec)
-
-mysql> UPDATE employee_payroll
-    -> set gender = 'M'
-    -> where name = 'Pranit' or name = 'Bill';
-Query OK, 2 rows affected (0.08 sec)
-Rows matched: 2  Changed: 2  Warnings: 0
-
-mysql> select * from employee_payroll;
-+----+--------+--------+--------+------------+
-| id | name   | gender | salary | start_date |
-+----+--------+--------+--------+------------+
-|  1 | Snehal |        |  10000 | 2019-12-12 |
-|  2 | Pranit | M      |  15000 | 2018-11-08 |
-|  3 | Bill   | M      |  20000 | 2018-08-01 |
-+----+--------+--------+--------+------------+
-3 rows in set (0.00 sec)
-
-**************************************************************************************************************************************
-\\UC7 Using Data Function Sum
-
-mysql> select SUM(salary) from employee_payroll
-    -> where gender = 'M'
-    -> group by gender;
-+-------------+
-| SUM(salary) |
-+-------------+
-|       35000 |
-+-------------+
-1 row in set (0.00 sec)
-
-**************************************************************************************************************************************
-
-\\UC8 Alter Table
-
-mysql> ALTER TABLE employee_payroll
-    -> ADD address varchar(255)
-    -> AFTER name;
-Query OK, 0 rows affected (0.25 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> ALTER TABLE employee_payroll
-    -> ADD phone varchar(255)
-    -> AFTER name;
-Query OK, 0 rows affected (0.25 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> ALTER TABLE employee_payroll
-    -> ADD department varchar(255) not null
-    -> after address;
-Query OK, 0 rows affected (0.08 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> select * from employee_payroll;
-+----+--------+-------+---------+------------+--------+--------+------------+
-| id | name   | phone | address | department | gender | salary | start_date |
-+----+--------+-------+---------+------------+--------+--------+------------+
-|  1 | Snehal | NULL  | NULL    |            |        |  10000 | 2019-12-12 |
-|  2 | Pranit | NULL  | NULL    |            | M      |  15000 | 2018-11-08 |
-|  3 | Bill   | NULL  | NULL    |            | M      |  20000 | 2018-08-01 |
-+----+--------+-------+---------+------------+--------+--------+------------+
-3 rows in set (0.00 sec)
-**************************************************************************************************************************************
-
-\\UC9 Alter Table 
-
-mysql> ALTER TABLE employee_payroll
-    -> RENAME COLUMN salary TO basic_pay;
-Query OK, 0 rows affected (0.06 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> ALTER TABLE employee_payroll ADD deductions DOUBLE NOT NULL AFTER basic_pay;
-Query OK, 0 rows affected (0.29 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> ALTER TABLE employee_payroll ADD taxable_pay DOUBLE NOT NULL AFTER deductions;
-Query OK, 0 rows affected (0.05 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> ALTER TABLE employee_payroll ADD tax DOUBLE NOT NULL AFTER taxable_pay;
-Query OK, 0 rows affected (0.05 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> ALTER TABLE employee_payroll ADD net_pay DOUBLE NOT NULL AFTER tax;
-Query OK, 0 rows affected (0.04 sec)
-Records: 0  Duplicates: 0  Warnings: 0
-
-mysql> select * from employee_payroll;
-+----+--------+-------+---------+------------+--------+-----------+------------+-------------+-----+---------+------------+
-| id | name   | phone | address | department | gender | basic_pay | deductions | taxable_pay | tax | net_pay | start_date |
-+----+--------+-------+---------+------------+--------+-----------+------------+-------------+-----+---------+------------+
-|  1 | Snehal | NULL  | NULL    |            |        |     10000 |          0 |           0 |   0 |       0 | 2019-12-12 |
-|  2 | Pranit | NULL  | NULL    |            | M      |     15000 |          0 |           0 |   0 |       0 | 2018-11-08 |
-|  3 | Bill   | NULL  | NULL    |            | M      |     20000 |          0 |           0 |   0 |       0 | 2018-08-01 |
-+----+--------+-------+---------+------------+--------+-----------+------------+-------------+-----+---------+------------+
-3 rows in set (0.00 sec)
-
-*************************************************************************************************************************************
-
-\\UC10 Make Terissa as part of Sales and Marketing
-
-mysql> INSERT INTO employee_payroll
-    -> (name,phone,address,department,gender,basic_pay,deductions,taxable_pay,tax,net_pay,start_date) VALUES
-    -> ('Terisa', '7489763452','Akluj','Marketing','F',30000.0,10000.0,20000.0,15000.0,25000.0,'2018-01-03');
-Query OK, 1 row affected (0.21 sec)
-
-mysql> select * from employee_payroll;
-+----+--------+------------+---------+------------+--------+-----------+------------+-------------+-------+---------+------------+
-| id | name   | phone      | address | department | gender | basic_pay | deductions | taxable_pay | tax   | net_pay | start_date |
-+----+--------+------------+---------+------------+--------+-----------+------------+-------------+-------+---------+------------+
-|  1 | Snehal | NULL       | NULL    |            |        |     10000 |          0 |           0 |     0 |       0 | 2019-12-12 |
-|  2 | Pranit | NULL       | NULL    |            | M      |     15000 |          0 |           0 |     0 |       0 | 2018-11-08 |
-|  3 | Bill   | NULL       | NULL    |            | M      |     20000 |          0 |           0 |     0 |       0 | 2018-08-01 |
-|  4 | Terisa | 7489763452 | Akluj   | Marketing  | F      |     30000 |      10000 |       20000 | 15000 |   25000 | 2018-01-03 |
-+----+--------+------------+---------+------------+--------+-----------+------------+-------------+-------+---------+------------+
-4 rows in set (0.00 sec)
-
-mysql> INSERT INTO employee_payroll
-    -> (name,phone,address,department,gender,basic_pay,deductions,taxable_pay,tax,net_pay,start_date) VALUES
-    -> ('Terisa', '7489763452','Akluj','Sales','F',30000.0,10000.0,20000.0,15000.0,25000.0,'2018-01-03');
-Query OK, 1 row affected (0.04 sec)
-
-mysql> select * from employee_payroll;
-+----+--------+------------+---------+------------+--------+-----------+------------+-------------+-------+---------+------------+
-| id | name   | phone      | address | department | gender | basic_pay | deductions | taxable_pay | tax   | net_pay | start_date |
-+----+--------+------------+---------+------------+--------+-----------+------------+-------------+-------+---------+------------+
-|  1 | Snehal | NULL       | NULL    |            |        |     10000 |          0 |           0 |     0 |       0 | 2019-12-12 |
-|  2 | Pranit | NULL       | NULL    |            | M      |     15000 |          0 |           0 |     0 |       0 | 2018-11-08 |
-|  3 | Bill   | NULL       | NULL    |            | M      |     20000 |          0 |           0 |     0 |       0 | 2018-08-01 |
-|  4 | Terisa | 7489763452 | Akluj   | Marketing  | F      |     30000 |      10000 |       20000 | 15000 |   25000 | 2018-01-03 |
-|  5 | Terisa | 7489763452 | Akluj   | Sales      | F      |     30000 |      10000 |       20000 | 15000 |   25000 | 2018-01-03 |
-+----+--------+------------+---------+------------+--------+-----------+------------+-------------+-------+---------+------------+
-5 rows in set (0.00 sec)
-
-*************************************************************************************************************************************
+mysql> CREATE TABLE payroll
+    -> (
+    -> id INT NOT NULL,
+    -> emp_ID INT NOT NULL,
+    -> basic_pay DOUBLE NOT NULL,
+    -> deduction DOUBLE NOT NULL,
+    -> taxable_pay DOUBLE NOT NULL,
+    -> FOREIGN KEY(emp_ID)REFERENCES employee(id)
+    -> ,PRIMARY KEY(id)
+    -> );
+Query OK, 0 rows affected (0.19 sec)
 
 
-
+mysql> CREATE TABLE department
+    -> (
+    -> dept_ID INT NOT NULL,
+    -> emp_ID INT NOT NULL,
+    -> department_Name VARCHAR(255) NOT NULL,
+    -> FOREIGN KEY(emp_ID) REFERENCES employee(id),
+    -> PRIMARY KEY(dept_ID)
+    -> );
+Query OK, 0 rows affected (0.23 sec)
